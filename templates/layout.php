@@ -15,7 +15,6 @@ $user_name = 'Ангелина';
 </head>
 <body>
 <div class="page-wrapper">
-
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
@@ -59,7 +58,7 @@ $user_name = 'Ангелина';
         <ul class="nav__list container">
             <?php foreach ($categories as $cat) :?>            
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?=$cat?></a>
+                    <a href="pages/all-lots.html"><?=$cat['name_category']?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

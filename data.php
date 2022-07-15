@@ -1,55 +1,38 @@
 <?php 
 
-$categories = [
-    'boards' => 'Доски и лыжи', 
-    'attachment' => 'Крепления', 
-    'boots' => 'Ботинки', 
-    'clothing' => 'Одежда', 
-    'tools' => 'Инструменты', 
-    'other' => 'Разное'
-];
+$db = mysqli_connect("localhost", "root", "", "yeticave");
+mysqli_set_charset($db, "utf8");
 
-$ads = [
-    [
-        'title' => '2014 Rossignol District Snowboard', 
-        'category' => $categories['boards'], 
-        'price' => 10999, 
-        'url' => 'img/lot-1.jpg',
-        'date' => '2022-06-15'
-    ],
-    [
-        'title' => 'DC Ply Mens 2016/2017 Snowboard', 
-        'category' => $categories['boards'], 
-        'price' => 159999, 
-        'url' => 'img/lot-2.jpg',
-        'date' => '2022-06-27'
-    ],
-    [
-        'title' => 'Крепления Union Contact Pro 2015 года размер L/XL', 
-        'category' => $categories['attachment'], 
-        'price' => 8000, 
-        'url' => 'img/lot-3.jpg',
-        'date' => '2022-06-13 13:10:10'
-    ],
-    [
-        'title' => 'Ботинки для сноуборда DC Mutiny Charocal', 
-        'category' => $categories['boots'], 
-        'price' => 10999, 
-        'url' => 'img/lot-4.jpg',
-        'date' => '2022-06-23'
-    ],
-    [
-        'title' => 'Куртка для сноуборда DC Mutiny Charocal', 
-        'category' => $categories['clothing'], 
-        'price' => 7500, 
-        'url' => 'img/lot-5.jpg',
-        'date' => '2022-07-13'
-    ],
-    [
-        'title' => 'Маска Oakley Canopy', 
-        'category' => $categories['other'], 
-        'price' => 5400, 
-        'url' => 'img/lot-6.jpg',
-        'date' => '2022-06-13'
-    ],
-];
+/**
+* Получает массив в результате sql-запроса на получение данных
+* @param $con - результт соединения
+* @param string $sql - sql запрос
+* @return void - или массив данных, или ошибку
+*/
+function db_query($sql = '') {
+    global $db;
+    if (empty($sql)) return false;
+    $res = mysqli_query($db, $sql);
+    if (!$res) return mysqli_error($db);
+    return mysqli_fetch_all($res, MYSQLI_ASSOC);
+}
+
+/**
+* Получает массив категорий
+* @return void - или массив данных, или ошибка
+*/
+function get_categories() {
+    return db_query("SELECT character_code, name_category FROM categories");   
+}
+
+/**
+* Получает массив последних лотов
+* @param number $count - количество лотов
+* @return void - или массив данных, или ошибка
+*/
+function get_last_lots($count) {  
+    return db_query("SELECT lots.title, lots.img, lots.start_price, lots.date_finish, categories.name_category
+    FROM lots JOIN categories ON lots.category_id = categories.id
+    ORDER BY lots.date_creation DESC
+    LIMIT $count");
+}
