@@ -23,7 +23,7 @@ CREATE TABLE lots (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title VARCHAR(255),
-    lot_description TEXT,
+    description TEXT,
     img VARCHAR(255),
     start_price INT,
     date_finish DATE,

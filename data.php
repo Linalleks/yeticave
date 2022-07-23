@@ -11,6 +11,10 @@ mysqli_set_charset($db, "utf8");
 */
 function db_query($sql = '') {
     global $db;
+    if (!$db) {
+        $error = mysqli_connect_error();
+        return $error;
+    } 
     if (empty($sql)) return false;
     $res = mysqli_query($db, $sql);
     if (!$res) return mysqli_error($db);
@@ -31,8 +35,20 @@ function get_categories() {
 * @return void - или массив данных, или ошибка
 */
 function get_last_lots($count) {  
-    return db_query("SELECT lots.title, lots.img, lots.start_price, lots.date_finish, categories.name_category
+    return db_query("SELECT lots.id, lots.title, lots.img, lots.start_price, lots.date_finish, categories.name_category
     FROM lots JOIN categories ON lots.category_id = categories.id
     ORDER BY lots.date_creation DESC
     LIMIT $count");
+}
+
+/**
+* Получает массив последних лотов
+* @param number $id - идентификатор лота
+* @return void - или массив данных, или ошибка
+*/
+function get_lot($id) {  
+    return db_query("SELECT lots.title, lots.img, lots.description, lots.start_price, lots.date_finish, categories.name_category
+    FROM lots JOIN categories ON lots.category_id = categories.id 
+    JOIN users ON lots.user_id = users.id
+    WHERE lots.id = $id");
 }
