@@ -1,5 +1,8 @@
 <?php 
 
+$is_auth = rand(0, 1);
+$user_name = 'Ангелина';
+
 $db = mysqli_connect("localhost", "root", "", "yeticave");
 mysqli_set_charset($db, "utf8");
 
@@ -9,7 +12,7 @@ mysqli_set_charset($db, "utf8");
 * @param string $sql - sql запрос
 * @return void - или массив данных, или ошибку
 */
-function db_query($sql = '') {
+function db_query($sql = '', $all = true) {
     global $db;
     if (!$db) {
         $error = mysqli_connect_error();
@@ -18,6 +21,9 @@ function db_query($sql = '') {
     if (empty($sql)) return false;
     $res = mysqli_query($db, $sql);
     if (!$res) return mysqli_error($db);
+    if (!$all) {
+        return mysqli_fetch_assoc($res);
+    }
     return mysqli_fetch_all($res, MYSQLI_ASSOC);
 }
 
@@ -26,7 +32,7 @@ function db_query($sql = '') {
 * @return void - или массив данных, или ошибка
 */
 function get_categories() {
-    return db_query("SELECT character_code, name_category FROM categories");   
+    return db_query("SELECT * FROM categories");   
 }
 
 /**
@@ -50,5 +56,17 @@ function get_lot($id) {
     return db_query("SELECT lots.title, lots.img, lots.description, lots.start_price, lots.date_finish, categories.name_category
     FROM lots JOIN categories ON lots.category_id = categories.id 
     JOIN users ON lots.user_id = users.id
-    WHERE lots.id = $id");
+    WHERE lots.id = $id", false);
+}
+
+/**
+ * Формирует SQL-запрос для создания нового лота
+ * @param integer $user_id id пользователя
+ * @return string SQL-запрос
+ */
+function insert_lot ($user_id, $data = []) {
+    global $db;
+    $sql = "INSERT INTO lots (title, category_id, description, start_price, step, date_finish, img, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, $user_id);";
+    $stmt = db_get_prepare_stmt($db, $sql, $data);
+    return mysqli_stmt_execute($stmt);
 }

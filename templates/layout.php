@@ -1,17 +1,11 @@
-<?php 
-
-$is_auth = rand(0, 1);
-
-$user_name = 'Ангелина';
-
-?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>$title</title>
+    <title><?=$title?></title>
     <link href="../css/normalize.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/flatpickr.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="page-wrapper">
@@ -25,7 +19,7 @@ $user_name = 'Ангелина';
                 <input type="search" name="search" placeholder="Поиск лота">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
-            <a class="main-header__add-lot button" href="pages/add-lot.html">Добавить лот</a>
+            <a class="main-header__add-lot button" href="page-add.php">Добавить лот</a>
 
             <nav class="user-menu">
                 <?php if ($is_auth == 1): ?>

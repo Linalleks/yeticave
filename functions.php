@@ -14,9 +14,9 @@ function format_price ($price) {
 }
 
 /**
-* Получает остаток времени до переданной даты в формате массива [ЧЧ, ММ]
-* @param date $date - дата в будущем в формате ['гггг-мм-дд']
-*/
+ * Получает остаток времени до переданной даты в формате массива [ЧЧ, ММ]
+ * @param date $date - дата в будущем в формате ['гггг-мм-дд']
+ */
 function get_dt_range($date) {
     date_default_timezone_set('Europe/Moscow');
     $diff = date_diff(date_create('now'), date_create($date));
@@ -28,3 +28,49 @@ function get_dt_range($date) {
     
     return [$hours, $min];
 }
+
+/**
+ * Валидирует поле категории, если такой категории нет в списке
+ * возвращает сообщение об этом
+ * @param int $id - ID категории, которую пользователь выбрал в списке (или ввел)
+ * @param array $cat_list - Список существующих категорий
+ * @return string - Текст сообщения об ошибке/ничего
+ */
+function validate_category ($id, $cat_list) {
+    if (!in_array($id, $cat_list)) {
+        return "Указана несуществующая категория";
+    }
+}
+/**
+ * Проверяет что содержимое поля является числом больше нуля
+ * @param string $num число которое ввел пользователь в форму
+ * @return string Текст сообщения об ошибке
+ */
+function validate_number ($num) {
+    if (!empty($num)) {
+        $num *= 1;
+        if (!(is_int($num) && $num > 0)) {
+            return "Содержимое поля должно быть целым числом больше нуля";
+        }
+    }
+};
+
+/**
+ * Проверяет что дата окончания торгов не меньше одного дня
+ * @param string $date дата которую ввел пользователь в форму
+ * @return string Текст сообщения об ошибке
+ */
+function validate_date ($date) {
+    if (is_date_valid($date)) {
+        $now = date_create("now");
+        $d = date_create($date);
+        $diff = date_diff($d, $now);
+        $interval = date_interval_format($diff, "%d");
+
+        if ($interval < 1) {
+            return "Дата должна быть больше текущей не менее чем на один день";
+        };
+    } else {
+        return "Формат даты должен соответствовать «ГГГГ-ММ-ДД»";
+    }
+};
