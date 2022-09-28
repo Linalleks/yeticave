@@ -74,3 +74,30 @@ function validate_date ($date) {
         return "Формат даты должен соответствовать «ГГГГ-ММ-ДД»";
     }
 };
+
+/**
+ * Проверяет что содержимое поля является корректным адресом электронной почты
+ * @param string $email - адрес электронной почты
+ * @return string - Текст сообщения об ошибке
+ */
+function validate_email ($email) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return "E-mail должен быть корректным";
+    }
+}
+
+/**
+ * Проверяет что содержимое поля укладывается в допустимый диапазон
+ * @param string $text - содержимое поля
+ * @param int $min - минимальное количество символов
+ * @param int $max - максимальное количество символов
+ * @return string - Текст сообщения об ошибке
+ */
+function validate_length ($text, $min, $max) {
+    if ($text) {
+        $len = mb_strlen($text);
+        if ($len < $min or $len > $max) {
+            return "Введите коректное количество символов (от $min до $max символов)";
+        }
+    }
+}

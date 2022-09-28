@@ -1,7 +1,7 @@
 <?php 
-
-$is_auth = rand(0, 1);
-$user_name = 'Ангелина';
+session_start();
+$is_auth = isset($_SESSION["name"]);
+$user_name = $_SESSION["name"];
 
 $db = mysqli_connect("localhost", "root", "", "yeticave");
 mysqli_set_charset($db, "utf8");
@@ -60,7 +60,7 @@ function get_lot($id) {
 }
 
 /**
- * Формирует SQL-запрос для создания нового лота
+ * Выполняет SQL-запрос для создания нового лота
  * @param integer $user_id id пользователя
  * @return string SQL-запрос
  */
@@ -69,4 +69,33 @@ function insert_lot ($user_id, $data = []) {
     $sql = "INSERT INTO lots (title, category_id, description, start_price, step, date_finish, img, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, $user_id);";
     $stmt = db_get_prepare_stmt($db, $sql, $data);
     return mysqli_stmt_execute($stmt);
+}
+
+/**
+ * Возвращает массив данных пользователей: адресс электронной почты и имя
+ * @return [Array | String] - или массив данных, или ошибка
+ */
+function get_users() {
+    return db_query("SELECT email, user_name FROM users");  
+}
+
+/**
+ * Выполняет SQL-запрос для создания нового лота
+ * @param integer $user_id id пользователя
+ * @return string SQL-запрос
+ */
+function insert_user ($data = []) {
+    global $db;
+    $sql = "INSERT INTO users (email, user_password, user_name, contacts) VALUES (?, ?, ?, ?);";
+    $stmt = db_get_prepare_stmt($db, $sql, $data);
+    return mysqli_stmt_execute($stmt);
+}
+
+/**
+ * Возвращает массив данных пользователя: id, адресс электронной почты, имя, хеш пароля
+ * @param $email - введенный адрес электронной почты
+ * @return [Array | String] - или массив данных, или ошибка
+ */
+function get_login($email) {
+    return db_query("SELECT id, email, user_name, user_password FROM users WHERE email = '$email'", false);
 }

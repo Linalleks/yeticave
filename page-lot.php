@@ -16,13 +16,17 @@ if (!$id || empty($lot)) {
 
 $page_content = include_template('lot.php', [
     "categories" => $categories,
-    "lot" => $lot
+    "lot" => $lot,
+    "is_auth" => $is_auth,
+    "user_name" => $user_name
 ]);
 
 $layout_content = include_template('layout.php', [
     "content" => $page_content,
     "categories" => $categories,
-    "title" => $lot['title']
+    "title" => $lot['title'],
+    "is_auth" => $is_auth,
+    "user_name" => $user_name
 ]);
 
 print($layout_content);

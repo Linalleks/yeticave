@@ -1,4 +1,7 @@
   <main>
+    <?php
+    // var_dump($is_auth);
+    ?>
     <nav class="nav">
       <ul class="nav__list container">
         <?php foreach ($categories as $cat) :?>
@@ -33,6 +36,7 @@
                 Мин. ставка <span><?=format_price($lot['start_price'])?></span>
               </div>
             </div>
+            <?php if ($is_auth): ?>
             <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">
               <p class="lot-item__form-item form__item form__item--invalid">
                 <label for="cost">Ваша ставка</label>
@@ -41,6 +45,7 @@
               </p>
               <button type="submit" class="button">Сделать ставку</button>
             </form>
+            <?php endif; ?>
           </div>
           <div class="history">
             <h3>История ставок (<span>10</span>)</h3>
