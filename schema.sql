@@ -33,7 +33,8 @@ CREATE TABLE lots (
     category_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (winner_id) REFERENCES users(id),
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    FULLTEXT (title, description)
 );
 
 CREATE TABLE bets (
