@@ -8,7 +8,7 @@ $search = $_GET["search"];
 if ($search) {
     $items_count = get_count_lots($search);
     $cur_page = $_GET["page"] ?? 1;
-    $page_items = 9;
+    $page_items = 3;
     $pages_count = ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;
     $pages = range(1, $pages_count);
@@ -20,7 +20,6 @@ $page_content = include_template("search.php", [
     "categories" => $categories,
     "search" => $search,
     "lots" => $lots,
-    "pagination" => $pagination,
     "pages_count" => $pages_count,
     "pages" => $pages,
     "cur_page" => $cur_page

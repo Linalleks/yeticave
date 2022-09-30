@@ -42,19 +42,19 @@
       <?php if ($pages_count > 1): ?>
       <ul class="pagination-list">
         <?php 
-        $prev = $cur_page--;
-        $next = $cur_page++;
+        $prev = $cur_page-1;
+        $next = $cur_page+1;
         ?>
         <li class="pagination-item pagination-item-prev">
-          <a <?php if ($cur_page >= 2): ?> href="search.php?search=<?=$search?>&page=<?=$prev?>" <?php endif; ?>>Назад</a>
+          <a <?php if ($cur_page >= 2): ?> href="page-search.php?search=<?=$search?>&page=<?=$prev?>" <?php endif; ?>>Назад</a>
         </li>
         <?php foreach($pages as $page): ?>
           <li class="pagination-item <?php if ($page == $cur_page): ?>pagination-item-active<?php endif; ?>">
-              <a href="search.php?search=<?=$search?>&page=<?=$page?>"><?=$page?></a>
+              <a href="page-search.php?search=<?=$search?>&page=<?=$page?>"><?=$page?></a>
           </li>
         <?php endforeach; ?>
         <li class="pagination-item pagination-item-next">
-            <a <?php if ($cur_page < $pages_count): ?> href="search.php?search=<?= $search; ?>&page=<?= $next; ?>"<?php endif; ?>>Вперед</a>
+            <a <?php if ($cur_page < $pages_count): ?> href="page-search.php?search=<?= $search; ?>&page=<?= $next; ?>"<?php endif; ?>>Вперед</a>
         </li>
       </ul>
       <?php endif; ?>
